@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fixed Sidebar Navigation</title>
+    <title>3D Flipbook PDF Viewer & Embedder - E-Books, Manuals, Newsletters, Reports</title>
     <style>
         * {
             margin: 0;
@@ -13,7 +13,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #f8fafc;
+            background: #fff;
             color: #334155;
             line-height: 1.6;
         }
@@ -24,6 +24,8 @@
             overflow: hidden;
             width: 1200px;
             margin: 0 auto;
+            background: #f8fafc;
+            border-right: 1px solid rgb(227, 227, 227);
         }
 
         /* Sidebar Styles */
@@ -52,25 +54,23 @@
         }
 
         .sidebar-header {
-            padding: 2rem 1.5rem;
+            padding:30px 10px;
             border-bottom: 1px solid rgba(255,255,255,0.1);
             text-align: center;
         }
 
         .logo {
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             font-weight: 700;
             color: white;
             text-decoration: none;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 0.5rem;
+            gap: 5px;
         }
 
         .logo-icon {
-            width: 32px;
-            height: 32px;
             background: rgba(255,255,255,0.2);
             border-radius: 8px;
             display: flex;
@@ -166,6 +166,73 @@
             display: flex;
             align-items: center;
             gap: 1rem;
+        }
+
+        .search-results {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            max-height: 400px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+        }
+
+        .search-result-item {
+            padding: 0.75rem 1rem;
+            border-bottom: 1px solid #f1f5f9;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .search-result-item:hover {
+            background: #f8fafc;
+        }
+
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+
+        .search-result-title {
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 0.25rem;
+        }
+
+        .search-result-content {
+            color: #64748b;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .search-result-section {
+            background: #667eea;
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            display: inline-block;
+            margin-top: 0.25rem;
+        }
+
+        .highlight {
+            background-color: #fef3c7;
+            padding: 0.1rem 0.2rem;
+            border-radius: 3px;
+            font-weight: 600;
+        }
+
+        .no-results {
+            padding: 2rem;
+            text-align: center;
+            color: #64748b;
+            font-style: italic;
         }
 
         .search-box {
@@ -354,15 +421,15 @@
         <nav class="sidebar" id="sidebar">
             <div class="sidebar-header">
                 <a href="#" class="logo">
-                    <div class="logo-icon">A</div>
-                    Admin Panel
+                    <div class="logo-icon"><img width="70" src="https://ps.w.org/pdf-embed-viewer/assets/icon-128x128.png?rev=3282814"></div>
+                    3D Flipbook PDF Viewer
                 </a>
             </div>
             <ul class="nav-menu">
                 <li class="nav-item">
-                    <a href="#dashboard" class="nav-link active" onclick="showContent('dashboard')">
+                    <a href="#installation" class="nav-link active" onclick="showContent('installation')">
                         <span class="nav-icon">📊</span>
-                        <span class="nav-text">Dashboard</span>
+                        <span class="nav-text">Installation</span>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -417,48 +484,26 @@
                 <div class="topbar-left">
                     <button class="mobile-menu-toggle" onclick="toggleSidebar()">☰</button>
                     <div>
-                        <h1 class="page-title" id="pageTitle">Dashboard</h1>
-                        <div class="breadcrumb">Home > <span id="breadcrumb">Dashboard</span></div>
+                        <h1 class="page-title" id="pageTitle">Installation</h1>
+                        <div class="breadcrumb">Home > <span id="breadcrumb">installation</span></div>
                     </div>
                 </div>
                 <div class="topbar-right">
                     <div class="search-box">
-                        <input type="text" class="search-input" placeholder="Search...">
+                        <input type="text" class="search-input" placeholder="Search..." id="searchInput" onkeyup="performSearch()" oninput="performSearch()">
                         <span class="search-icon">🔍</span>
-                    </div>
-                    <div class="user-profile">
-                        <div class="user-avatar">JD</div>
-                        <span>John Doe</span>
+                        <div class="search-results" id="searchResults"></div>
                     </div>
                 </div>
             </div>
-
             <!-- Main Content -->
             <div class="main-content">
-                <div id="content-dashboard" class="content-view">
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <div class="stat-value">1,234</div>
-                            <div class="stat-label">Total Users</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-value">567</div>
-                            <div class="stat-label">Active Orders</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-value">$12,345</div>
-                            <div class="stat-label">Revenue</div>
-                        </div>
-                        <div class="stat-card">
-                            <div class="stat-value">89%</div>
-                            <div class="stat-label">Customer Satisfaction</div>
-                        </div>
-                    </div>
+                <div id="content-installation" class="content-view">
                     
                     <div class="content-section">
-                        <h2 class="section-title">📊 Dashboard Overview</h2>
+                        <h2 class="section-title">📊 Installation Overview</h2>
                         <div class="section-content">
-                            <p>Welcome to your dashboard! Here you can view key metrics and manage your application. The dashboard provides real-time insights into your business performance.</p>
+                            <p>Welcome to your installation! Here you can view key metrics and manage your application. The installation provides real-time insights into your business performance.</p>
                             <p>Use the sidebar navigation to access different sections of the application. Each section is designed to help you manage specific aspects of your business efficiently.</p>
                         </div>
                     </div>
@@ -480,6 +525,8 @@
                         <div class="section-content">
                             <p>Manage your application users from this section. You can view user profiles, edit permissions, and monitor user activity.</p>
                             <p>Features include user search, filtering, bulk operations, and detailed user analytics.</p>
+                            <p>User roles: Admin, Editor, Viewer, Guest. Each role has different permission levels.</p>
+                            <p>Recent users: John Doe, Jane Smith, Mike Johnson, Sarah Wilson.</p>
                         </div>
                     </div>
                 </div>
@@ -490,6 +537,8 @@
                         <div class="section-content">
                             <p>Manage your product inventory, pricing, and catalog organization. Add new products, update existing ones, and track stock levels.</p>
                             <p>Advanced features include bulk import/export, category management, and product analytics.</p>
+                            <p>Categories: Electronics, Clothing, Books, Home & Garden, Sports, Toys.</p>
+                            <p>Popular products: iPhone 14, Samsung Galaxy, Nike Shoes, MacBook Pro.</p>
                         </div>
                     </div>
                 </div>
@@ -500,6 +549,8 @@
                         <div class="section-content">
                             <p>Track and manage customer orders from placement to delivery. View order details, update status, and handle returns.</p>
                             <p>Integration with shipping providers and automated notification system included.</p>
+                            <p>Order statuses: Pending, Processing, Shipped, Delivered, Cancelled, Returned.</p>
+                            <p>Shipping methods: Standard, Express, Overnight, International.</p>
                         </div>
                     </div>
                 </div>
@@ -508,8 +559,10 @@
                     <div class="content-section">
                         <h2 class="section-title">📈 Analytics & Reports</h2>
                         <div class="section-content">
-                            <p>Comprehensive analytics dashboard with real-time data visualization. Generate custom reports and track key performance indicators.</p>
+                            <p>Comprehensive analytics installation with real-time data visualization. Generate custom reports and track key performance indicators.</p>
                             <p>Export data in various formats and schedule automated reports.</p>
+                            <p>Metrics: Revenue, Conversion Rate, Customer Acquisition Cost, Lifetime Value.</p>
+                            <p>Reports: Monthly Sales, User Engagement, Product Performance, Traffic Analysis.</p>
                         </div>
                     </div>
                 </div>
@@ -520,6 +573,8 @@
                         <div class="section-content">
                             <p>Manage customer communications and internal messaging. View conversation history and respond to inquiries.</p>
                             <p>Automated responses and message templates available for common inquiries.</p>
+                            <p>Message types: Support tickets, Customer feedback, Internal memos, Notifications.</p>
+                            <p>Templates: Welcome message, Order confirmation, Shipping update, Refund process.</p>
                         </div>
                     </div>
                 </div>
@@ -530,6 +585,8 @@
                         <div class="section-content">
                             <p>Configure application settings, user preferences, and system parameters. Manage integrations and API configurations.</p>
                             <p>Security settings, backup options, and system maintenance tools are available here.</p>
+                            <p>Options: Theme selection, Language preferences, Notification settings, Privacy controls.</p>
+                            <p>Integrations: Payment gateways, Email services, Social media, Analytics tools.</p>
                         </div>
                     </div>
                 </div>
@@ -540,6 +597,8 @@
                         <div class="section-content">
                             <p>Access documentation, tutorials, and support resources. Find answers to common questions and contact technical support.</p>
                             <p>Knowledge base, video tutorials, and community forums are available for additional assistance.</p>
+                            <p>Topics: Getting started, Account management, Troubleshooting, Advanced features.</p>
+                            <p>Support channels: Live chat, Email support, Phone support, Community forum.</p>
                         </div>
                     </div>
                 </div>
@@ -548,69 +607,240 @@
     </div>
 
     <script>
-        function showContent(section) {
-            // Hide all content views
-            const contentViews = document.querySelectorAll('.content-view');
-            contentViews.forEach(view => {
-                view.style.display = 'none';
+        // Search functionality
+        const searchData = {
+            'installation': {
+                title: 'Installation',
+                content: [
+                    'Welcome to your installation! Here you can view key metrics and manage your application.',
+                    'The installation provides real-time insights into your business performance.',
+                    'Use the sidebar navigation to access different sections of the application.',
+                    'Total Users: 1,234',
+                    'Active Orders: 567',
+                    'Revenue: $12,345',
+                    'Customer Satisfaction: 89%',
+                    'Recent Activity: New user registration, Order shipped, Product inventory updated'
+                ]
+            },
+            'users': {
+                title: 'User Management',
+                content: [
+                    'Manage your application users from this section.',
+                    'View user profiles, edit permissions, and monitor user activity.',
+                    'Features include user search, filtering, bulk operations, and detailed user analytics.',
+                    'User roles: Admin, Editor, Viewer, Guest',
+                    'Recent users: John Doe, Jane Smith, Mike Johnson, Sarah Wilson'
+                ]
+            },
+            'products': {
+                title: 'Product Catalog',
+                content: [
+                    'Manage your product inventory, pricing, and catalog organization.',
+                    'Add new products, update existing ones, and track stock levels.',
+                    'Advanced features include bulk import/export, category management, and product analytics.',
+                    'Categories: Electronics, Clothing, Books, Home & Garden, Sports, Toys',
+                    'Popular products: iPhone 14, Samsung Galaxy, Nike Shoes, MacBook Pro'
+                ]
+            },
+            'orders': {
+                title: 'Order Management',
+                content: [
+                    'Track and manage customer orders from placement to delivery.',
+                    'View order details, update status, and handle returns.',
+                    'Integration with shipping providers and automated notification system included.',
+                    'Order statuses: Pending, Processing, Shipped, Delivered, Cancelled, Returned',
+                    'Shipping methods: Standard, Express, Overnight, International'
+                ]
+            },
+            'analytics': {
+                title: 'Analytics & Reports',
+                content: [
+                    'Comprehensive analytics installation with real-time data visualization.',
+                    'Generate custom reports and track key performance indicators.',
+                    'Export data in various formats and schedule automated reports.',
+                    'Metrics: Revenue, Conversion Rate, Customer Acquisition Cost, Lifetime Value',
+                    'Reports: Monthly Sales, User Engagement, Product Performance, Traffic Analysis'
+                ]
+            },
+            'messages': {
+                title: 'Messages',
+                content: [
+                    'Manage customer communications and internal messaging.',
+                    'View conversation history and respond to inquiries.',
+                    'Automated responses and message templates available for common inquiries.',
+                    'Message types: Support tickets, Customer feedback, Internal memos, Notifications',
+                    'Templates: Welcome message, Order confirmation, Shipping update, Refund process'
+                ]
+            },
+            'settings': {
+                title: 'Settings',
+                content: [
+                    'Configure application settings, user preferences, and system parameters.',
+                    'Manage integrations and API configurations.',
+                    'Security settings, backup options, and system maintenance tools are available here.',
+                    'Options: Theme selection, Language preferences, Notification settings, Privacy controls',
+                    'Integrations: Payment gateways, Email services, Social media, Analytics tools'
+                ]
+            },
+            'help': {
+                title: 'Help & Support',
+                content: [
+                    'Access documentation, tutorials, and support resources.',
+                    'Find answers to common questions and contact technical support.',
+                    'Knowledge base, video tutorials, and community forums are available for additional assistance.',
+                    'Topics: Getting started, Account management, Troubleshooting, Advanced features',
+                    'Support channels: Live chat, Email support, Phone support, Community forum'
+                ]
+            }
+        };
+    </script>
+    <script>
+        function escapeRegExp(string) {
+        return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        }
+
+        function highlightText(text, query) {
+        const regex = new RegExp(`(${escapeRegExp(query)})`, 'gi');
+        return text.replace(regex, '<span class="highlight">$1</span>');
+        }
+
+        function performSearch() {
+        const searchInput = document.getElementById('searchInput');
+        const searchResults = document.getElementById('searchResults');
+        const query = searchInput.value.trim().toLowerCase();
+
+        if (query.length < 2) {
+            searchResults.style.display = 'none';
+            return;
+        }
+
+        const results = [];
+
+        for (const [section, data] of Object.entries(searchData)) {
+            const sectionResults = [];
+
+            if (data.title.toLowerCase().includes(query)) {
+            sectionResults.push({ type: 'title', content: data.title });
+            }
+
+            data.content.forEach(item => {
+            if (item.toLowerCase().includes(query)) {
+                sectionResults.push({ type: 'content', content: item });
+            }
             });
 
-            // Show selected content
-            document.getElementById(`content-${section}`).style.display = 'block';
+            if (sectionResults.length > 0) {
+            results.push({ section, title: data.title, results: sectionResults });
+            }
+        }
 
-            // Update active navigation
-            const navLinks = document.querySelectorAll('.nav-link');
-            navLinks.forEach(link => {
-                link.classList.remove('active');
+        displaySearchResults(results, query);
+        }
+
+        function displaySearchResults(results, query) {
+        const searchResults = document.getElementById('searchResults');
+
+        if (results.length === 0) {
+            searchResults.innerHTML = `<div class="no-results">No results found for "${query}"</div>`;
+            searchResults.style.display = 'block';
+            return;
+        }
+
+        let html = '';
+        results.forEach(result => {
+            result.results.forEach(item => {
+            const highlighted = highlightText(item.content, query);
+            html += `
+                <div class="search-result-item" onclick="navigateToSection('${result.section}')">
+                <div class="search-result-title">${result.title}</div>
+                <div class="search-result-content">${highlighted}</div>
+                </div>
+            `;
             });
-            event.target.closest('.nav-link').classList.add('active');
+        });
 
-            // Update page title and breadcrumb
-            const titles = {
-                'dashboard': 'Dashboard',
-                'users': 'User Management',
-                'products': 'Product Catalog',
-                'orders': 'Order Management',
-                'analytics': 'Analytics & Reports',
-                'messages': 'Messages',
-                'settings': 'Settings',
-                'help': 'Help & Support'
-            };
+        searchResults.innerHTML = html;
+        searchResults.style.display = 'block';
+        }
 
+        function navigateToSection(section) {
+        document.getElementById('searchResults').style.display = 'none';
+        document.getElementById('searchInput').value = '';
+        showContent(section);
+        }
+
+        function showContent(section, clickedElement = null) {
+        document.querySelectorAll('.content-view').forEach(view => {
+            view.style.display = 'none';
+        });
+
+        const target = document.getElementById(`content-${section}`);
+        if (target) target.style.display = 'block';
+
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.classList.remove('active');
+        });
+
+        if (clickedElement) {
+            clickedElement.classList.add('active');
+        } else {
+            const found = document.querySelector(`[onclick*="showContent('${section}')"]`);
+            if (found) found.classList.add('active');
+        }
+
+        const titles = {
+            'installation': 'Installation',
+            'users': 'User Management',
+            'products': 'Product Catalog',
+            'orders': 'Order Management',
+            'analytics': 'Analytics & Reports',
+            'messages': 'Messages',
+            'settings': 'Settings',
+            'help': 'Help & Support'
+        };
+
+        if (titles[section]) {
             document.getElementById('pageTitle').textContent = titles[section];
             document.getElementById('breadcrumb').textContent = titles[section];
+        }
 
-            // Close sidebar on mobile after selection
-            if (window.innerWidth <= 768) {
-                document.getElementById('sidebar').classList.remove('active');
-            }
+        if (window.innerWidth <= 768) {
+            document.getElementById('sidebar').classList.remove('active');
+        }
         }
 
         function toggleSidebar() {
-            const sidebar = document.getElementById('sidebar');
-            sidebar.classList.toggle('active');
+        document.getElementById('sidebar').classList.toggle('active');
         }
 
-        // Close sidebar when clicking outside on mobile
-        document.addEventListener('click', function(event) {
-            const sidebar = document.getElementById('sidebar');
-            const toggle = document.querySelector('.mobile-menu-toggle');
-            
-            if (window.innerWidth <= 768 && 
-                !sidebar.contains(event.target) && 
-                !toggle.contains(event.target) &&
-                sidebar.classList.contains('active')) {
-                sidebar.classList.remove('active');
-            }
+        // Sidebar close on outside click (mobile)
+        document.addEventListener('click', function (e) {
+        const sidebar = document.getElementById('sidebar');
+        const toggle = document.querySelector('.mobile-menu-toggle');
+
+        if (
+            window.innerWidth <= 768 &&
+            !sidebar.contains(e.target) &&
+            !toggle.contains(e.target) &&
+            sidebar.classList.contains('active')
+        ) {
+            sidebar.classList.remove('active');
+        }
         });
 
-        // Handle window resize
-        window.addEventListener('resize', function() {
-            const sidebar = document.getElementById('sidebar');
-            if (window.innerWidth > 768) {
-                sidebar.classList.remove('active');
-            }
+        // Handle resize
+        window.addEventListener('resize', function () {
+        const sidebar = document.getElementById('sidebar');
+        if (window.innerWidth > 768) {
+            sidebar.classList.remove('active');
+        }
+        });
+
+        // Prevent closing when clicking inside search results
+        document.getElementById('searchResults').addEventListener('click', function (e) {
+        e.stopPropagation();
         });
     </script>
+
 </body>
 </html>
