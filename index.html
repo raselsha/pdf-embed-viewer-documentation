@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fixed Sidebar Navigation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8fafc;
+            color: #334155;
+            line-height: 1.6;
+        }
+
+        .container {
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+            width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            width: 280px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+        }
+
+        .sidebar::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar::-webkit-scrollbar-track {
+            background: rgba(255,255,255,0.1);
+        }
+
+        .sidebar::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.3);
+            border-radius: 3px;
+        }
+
+        .sidebar-header {
+            padding: 2rem 1.5rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        .nav-menu {
+            padding: 1rem 0;
+            list-style: none;
+        }
+
+        .nav-item {
+            margin: 0.25rem 0;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem 1.5rem;
+            color: rgba(255,255,255,0.8);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .nav-link:hover {
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border-left-color: rgba(255,255,255,0.5);
+        }
+
+        .nav-link.active {
+            background: rgba(255,255,255,0.15);
+            color: white;
+            border-left-color: white;
+        }
+
+        .nav-icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+        }
+
+        .nav-text {
+            font-weight: 500;
+        }
+
+        /* Content Area */
+        .content {
+            flex: 1;
+            margin-left: 280px;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .topbar {
+            background: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .topbar-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .page-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        .breadcrumb {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .topbar-right {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .search-box {
+            position: relative;
+        }
+
+        .search-input {
+            padding: 0.5rem 1rem 0.5rem 2.5rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 20px;
+            width: 250px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #64748b;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .user-profile:hover {
+            background: #f1f5f9;
+        }
+
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .main-content {
+            flex: 1;
+            padding: 2rem;
+            overflow-y: auto;
+        }
+
+        .content-section {
+            background: white;
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border: 1px solid #e2e8f0;
+        }
+
+        .section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .section-content {
+            color: #475569;
+            line-height: 1.6;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #64748b;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .mobile-menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #64748b;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                transform: translateX(-100%);
+                width: 100%;
+                max-width: 280px;
+            }
+
+            .sidebar.active {
+                transform: translateX(0);
+            }
+
+            .content {
+                margin-left: 0;
+            }
+
+            .mobile-menu-toggle {
+                display: block;
+            }
+
+            .search-input {
+                width: 200px;
+            }
+
+            .topbar {
+                padding: 1rem;
+            }
+
+            .main-content {
+                padding: 1rem;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .topbar-right {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .search-input {
+                width: 150px;
+            }
+
+            .page-title {
+                font-size: 1.2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Sidebar -->
+        <nav class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <a href="#" class="logo">
+                    <div class="logo-icon">A</div>
+                    Admin Panel
+                </a>
+            </div>
+            <ul class="nav-menu">
+                <li class="nav-item">
+                    <a href="#dashboard" class="nav-link active" onclick="showContent('dashboard')">
+                        <span class="nav-icon">📊</span>
+                        <span class="nav-text">Dashboard</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#users" class="nav-link" onclick="showContent('users')">
+                        <span class="nav-icon">👥</span>
+                        <span class="nav-text">Users</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#products" class="nav-link" onclick="showContent('products')">
+                        <span class="nav-icon">📦</span>
+                        <span class="nav-text">Products</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#orders" class="nav-link" onclick="showContent('orders')">
+                        <span class="nav-icon">🛍️</span>
+                        <span class="nav-text">Orders</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#analytics" class="nav-link" onclick="showContent('analytics')">
+                        <span class="nav-icon">📈</span>
+                        <span class="nav-text">Analytics</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#messages" class="nav-link" onclick="showContent('messages')">
+                        <span class="nav-icon">💬</span>
+                        <span class="nav-text">Messages</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#settings" class="nav-link" onclick="showContent('settings')">
+                        <span class="nav-icon">⚙️</span>
+                        <span class="nav-text">Settings</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="#help" class="nav-link" onclick="showContent('help')">
+                        <span class="nav-icon">❓</span>
+                        <span class="nav-text">Help</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
+        <!-- Content Area -->
+        <div class="content">
+            <!-- Top Bar -->
+            <div class="topbar">
+                <div class="topbar-left">
+                    <button class="mobile-menu-toggle" onclick="toggleSidebar()">☰</button>
+                    <div>
+                        <h1 class="page-title" id="pageTitle">Dashboard</h1>
+                        <div class="breadcrumb">Home > <span id="breadcrumb">Dashboard</span></div>
+                    </div>
+                </div>
+                <div class="topbar-right">
+                    <div class="search-box">
+                        <input type="text" class="search-input" placeholder="Search...">
+                        <span class="search-icon">🔍</span>
+                    </div>
+                    <div class="user-profile">
+                        <div class="user-avatar">JD</div>
+                        <span>John Doe</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main Content -->
+            <div class="main-content">
+                <div id="content-dashboard" class="content-view">
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-value">1,234</div>
+                            <div class="stat-label">Total Users</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">567</div>
+                            <div class="stat-label">Active Orders</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">$12,345</div>
+                            <div class="stat-label">Revenue</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-value">89%</div>
+                            <div class="stat-label">Customer Satisfaction</div>
+                        </div>
+                    </div>
+                    
+                    <div class="content-section">
+                        <h2 class="section-title">📊 Dashboard Overview</h2>
+                        <div class="section-content">
+                            <p>Welcome to your dashboard! Here you can view key metrics and manage your application. The dashboard provides real-time insights into your business performance.</p>
+                            <p>Use the sidebar navigation to access different sections of the application. Each section is designed to help you manage specific aspects of your business efficiently.</p>
+                        </div>
+                    </div>
+
+                    <div class="content-section">
+                        <h2 class="section-title">🔔 Recent Activity</h2>
+                        <div class="section-content">
+                            <p>• New user registration: john.doe@example.com</p>
+                            <p>• Order #1234 has been shipped</p>
+                            <p>• Product inventory updated for SKU-5678</p>
+                            <p>• Monthly analytics report generated</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="content-users" class="content-view" style="display: none;">
+                    <div class="content-section">
+                        <h2 class="section-title">👥 User Management</h2>
+                        <div class="section-content">
+                            <p>Manage your application users from this section. You can view user profiles, edit permissions, and monitor user activity.</p>
+                            <p>Features include user search, filtering, bulk operations, and detailed user analytics.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="content-products" class="content-view" style="display: none;">
+                    <div class="content-section">
+                        <h2 class="section-title">📦 Product Catalog</h2>
+                        <div class="section-content">
+                            <p>Manage your product inventory, pricing, and catalog organization. Add new products, update existing ones, and track stock levels.</p>
+                            <p>Advanced features include bulk import/export, category management, and product analytics.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="content-orders" class="content-view" style="display: none;">
+                    <div class="content-section">
+                        <h2 class="section-title">🛍️ Order Management</h2>
+                        <div class="section-content">
+                            <p>Track and manage customer orders from placement to delivery. View order details, update status, and handle returns.</p>
+                            <p>Integration with shipping providers and automated notification system included.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="content-analytics" class="content-view" style="display: none;">
+                    <div class="content-section">
+                        <h2 class="section-title">📈 Analytics & Reports</h2>
+                        <div class="section-content">
+                            <p>Comprehensive analytics dashboard with real-time data visualization. Generate custom reports and track key performance indicators.</p>
+                            <p>Export data in various formats and schedule automated reports.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="content-messages" class="content-view" style="display: none;">
+                    <div class="content-section">
+                        <h2 class="section-title">💬 Messages</h2>
+                        <div class="section-content">
+                            <p>Manage customer communications and internal messaging. View conversation history and respond to inquiries.</p>
+                            <p>Automated responses and message templates available for common inquiries.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="content-settings" class="content-view" style="display: none;">
+                    <div class="content-section">
+                        <h2 class="section-title">⚙️ Settings</h2>
+                        <div class="section-content">
+                            <p>Configure application settings, user preferences, and system parameters. Manage integrations and API configurations.</p>
+                            <p>Security settings, backup options, and system maintenance tools are available here.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="content-help" class="content-view" style="display: none;">
+                    <div class="content-section">
+                        <h2 class="section-title">❓ Help & Support</h2>
+                        <div class="section-content">
+                            <p>Access documentation, tutorials, and support resources. Find answers to common questions and contact technical support.</p>
+                            <p>Knowledge base, video tutorials, and community forums are available for additional assistance.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showContent(section) {
+            // Hide all content views
+            const contentViews = document.querySelectorAll('.content-view');
+            contentViews.forEach(view => {
+                view.style.display = 'none';
+            });
+
+            // Show selected content
+            document.getElementById(`content-${section}`).style.display = 'block';
+
+            // Update active navigation
+            const navLinks = document.querySelectorAll('.nav-link');
+            navLinks.forEach(link => {
+                link.classList.remove('active');
+            });
+            event.target.closest('.nav-link').classList.add('active');
+
+            // Update page title and breadcrumb
+            const titles = {
+                'dashboard': 'Dashboard',
+                'users': 'User Management',
+                'products': 'Product Catalog',
+                'orders': 'Order Management',
+                'analytics': 'Analytics & Reports',
+                'messages': 'Messages',
+                'settings': 'Settings',
+                'help': 'Help & Support'
+            };
+
+            document.getElementById('pageTitle').textContent = titles[section];
+            document.getElementById('breadcrumb').textContent = titles[section];
+
+            // Close sidebar on mobile after selection
+            if (window.innerWidth <= 768) {
+                document.getElementById('sidebar').classList.remove('active');
+            }
+        }
+
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('active');
+        }
+
+        // Close sidebar when clicking outside on mobile
+        document.addEventListener('click', function(event) {
+            const sidebar = document.getElementById('sidebar');
+            const toggle = document.querySelector('.mobile-menu-toggle');
+            
+            if (window.innerWidth <= 768 && 
+                !sidebar.contains(event.target) && 
+                !toggle.contains(event.target) &&
+                sidebar.classList.contains('active')) {
+                sidebar.classList.remove('active');
+            }
+        });
+
+        // Handle window resize
+        window.addEventListener('resize', function() {
+            const sidebar = document.getElementById('sidebar');
+            if (window.innerWidth > 768) {
+                sidebar.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>
