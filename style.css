@@ -24,7 +24,7 @@
         /* Sidebar Styles */
         .sidebar {
             width: 280px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: linear-gradient(135deg, #2c3338 0%, #2c3338 100%);
             position: fixed;
             height: 100vh;
             overflow-y: auto;
