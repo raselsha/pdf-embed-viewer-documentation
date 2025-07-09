@@ -93,7 +93,7 @@ function escapeRegExp(string) {
 
         const titles = {
             'installation': 'Installation',
-            'users': 'User Management',
+            'getting-started': 'Getting Started',
             'products': 'Product Catalog',
             'orders': 'Order Management',
             'analytics': 'Analytics & Reports',

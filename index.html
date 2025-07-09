@@ -20,14 +20,14 @@
             <ul class="nav-menu">
                 <li class="nav-item">
                     <a href="#installation" class="nav-link active" onclick="showContent('installation')">
-                        <span class="nav-icon">📊</span>
+                        <span class="nav-icon">🛠️</span>
                         <span class="nav-text">Installation</span>
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#users" class="nav-link" onclick="showContent('users')">
-                        <span class="nav-icon">👥</span>
-                        <span class="nav-text">Users</span>
+                    <a href="#getting-started" class="nav-link" onclick="showContent('getting-started')">
+                        <span class="nav-icon">🚀</span>
+                        <span class="nav-text">Getting Started</span>
                     </a>
                 </li>
                 <li class="nav-item">
@@ -76,7 +76,7 @@
                 <div class="topbar-left">
                     <button class="mobile-menu-toggle" onclick="toggleSidebar()">☰</button>
                     <div>
-                        <h1 class="page-title" id="pageTitle">Installation</h1>
+                        <h1 class="page-title" id="pageTitle">🛠️ Installation</h1>
                         <div class="breadcrumb">Home > <span id="breadcrumb">installation</span></div>
                     </div>
                 </div>
@@ -93,29 +93,31 @@
                 <div id="content-installation" class="content-view">
                     
                     <div class="content-section">
-                        <h2 class="section-title">Installation in WordPress Dashboard</h2>
-                        <div class="section-content">                            
-                            <p>1. Navigate to the ‘Add New’ in the Plugins dashboard.</p>
-                            <p>2. Navigate to the ‘Upload’ area.</p>
-                            <p>3. Select <code>pdf-embed-viewer.zip</code> from your computer.</p>
-                            <p>4. Click ‘Install Now’.</p>
-                            <p>5. Activate the plugin in the Plugins dashboard.</p>
+                        <h2 class="section-title">🛠️ Installation in WordPress Dashboard</h2>
+                        <div class="section-content">                          
+                            <p>1. Navigate to the <b>Add New</b> in the Plugins dashboard.</p>
+                            <p>2. <a href="http://pdf.local/wp-admin/plugin-install.php?s=3D%2520Flipbook%2520PDF%2520Viewer%2520%2526%2520Embedder%2520%25E2%2580%2593%2520E-Books%252C%2520Manuals%252C%2520Newsletters%252C%2520Reports%2520&tab=search&type=term"><b>Install</b></a> plugin directly in plugin area then <b>Activate</b>.</p>
+                            <p>3. Or <a href="https://downloads.wordpress.org/plugin/pdf-embed-viewer.zip" target="_blank"><b>Download</b></a> plugin zip.</p>  
+                            <p>3. Navigate to the <b>Upload</b> area.</p>
+                            <p>4. Select <code>pdf-embed-viewer.zip</code> from your computer.</p>
+                            <p>5. Click <b>Install Now</b>.</p>
+                            <p>6. <b>Activate</b> the plugin in the Plugins dashboard.</p>
                         </div>
                     </div>
                     <div class="content-section">
-                        <h2 class="section-title">🔔 Using FTP</h2>
+                        <h2 class="section-title">📤 Using FTP</h2>
                         <div class="section-content">
-                            <p>1. Download pdf-embed-viewer.zip</p>
-                            <p>2. Extract the pdf-embed-viewer directory to your computer</p>
-                            <p>3. Upload the pdf-embed-viewer directory to the /wp-content/plugins/ directory</p>
-                            <p>4. Activate the plugin in the Plugin dashboard</p>
+                            <p>1. <a href="https://downloads.wordpress.org/plugin/pdf-embed-viewer.zip" target="_blank"><b>Download</b></a> pdf-embed-viewer.zip</p>
+                            <p>2. <b>Extract</b> the pdf-embed-viewer directory to your computer</p>
+                            <p>3. <b>Upload</b> the pdf-embed-viewer directory to the <code>/wp-content/plugins/</code> directory</p>
+                            <p>4. <b>Activate</b> the plugin in the Plugin dashboard</p>
                         </div>
                     </div>
                 </div>
 
-                <div id="content-users" class="content-view" style="display: none;">
+                <div id="content-getting-started" class="content-view" style="display: none;">
                     <div class="content-section">
-                        <h2 class="section-title">👥 User Management</h2>
+                        <h2 class="section-title">🚀 Getting Started</h2>
                         <div class="section-content">
                             <p>Manage your application users from this section. You can view user profiles, edit permissions, and monitor user activity.</p>
                             <p>Features include user search, filtering, bulk operations, and detailed user analytics.</p>
@@ -216,8 +218,8 @@
                     'Recent Activity: New user registration, Order shipped, Product inventory updated'
                 ]
             },
-            'users': {
-                title: 'User Management',
+            'getting-started': {
+                title: 'Getting Started',
                 content: [
                     'Manage your application users from this section.',
                     'View user profiles, edit permissions, and monitor user activity.',

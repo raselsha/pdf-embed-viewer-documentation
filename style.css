@@ -10,7 +10,12 @@
             color: #334155;
             line-height: 1.6;
         }
-
+        code{
+            background: #dfdfdf;
+            color: #334155;
+            padding: 5px;
+            border-radius: 4px;
+        }
         .container {
             display: flex;
             height: 100vh;
